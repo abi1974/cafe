@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Online - Brew Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8B4513",
+              secondary: "#D2691E",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+      }
+      .category-active {
+      color: #8B4513;
+      border-bottom: 2px solid #8B4513;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #8B4513;
+      border-radius: 50%;
+      cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="font-['Poppins'] bg-gray-50">
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center gap-8">
+            <a
+              href="https://readdy.ai/home/9072eaa1-d0ac-4213-8849-870058d7d9b7/1ca51725-0093-4449-85ae-a879b8c38aaf"
+              data-readdy="true"
+              class="font-['Pacifico'] text-primary text-3xl"
+              >logo</a
+            >
+            <div class="relative">
+              <i
+                class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              ></i>
+              <input
+                type="text"
+                placeholder="Search menu items..."
+                class="pl-10 pr-4 py-2 w-64 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
+              />
+            </div>
+          </div>
+          <div class="flex items-center space-x-6">
+            <button
+              class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary"
+            >
+              <i class="ri-user-line text-xl"></i>
+            </button>
+            <button
+              class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary relative"
+              id="cartBtn"
+            >
+              <i class="ri-shopping-cart-line text-xl"></i>
+              <span
+                class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                id="cartCount"
+                >0</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="pt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex items-center gap-4 mb-8">
+          <a
+            href="https://readdy.ai/home/9072eaa1-d0ac-4213-8849-870058d7d9b7/1ca51725-0093-4449-85ae-a879b8c38aaf"
+            data-readdy="true"
+            class="text-gray-600 hover:text-primary flex items-center gap-1"
+          >
+            <i class="ri-arrow-left-line"></i>
+            Back to Home
+          </a>
+          <span class="text-gray-400">/</span>
+          <span class="text-primary">Order Online</span>
+        </div>
+        <div class="flex items-center justify-between mb-8">
+          <h1 class="text-3xl font-['Playfair_Display'] font-bold">
+            Order Online
+          </h1>
+          <div class="flex items-center gap-4">
+            <button
+              class="!rounded-button flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700"
+              id="filterBtn"
+            >
+              <i class="ri-filter-3-line"></i>
+              Filters
+            </button>
+            <select
+              class="!rounded-button px-4 py-2 bg-white border border-gray-200 text-gray-700 pr-8"
+            >
+              <option>Sort by: Popular</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Newest</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-8">
+          <div
+            class="w-64 bg-white rounded-lg p-6 h-fit sticky top-24"
+            id="filterPanel"
+          >
+            <h3 class="font-semibold mb-4">Price Range</h3>
+            <div class="mb-6">
+              <input
+                type="range"
+                min="0"
+                max="50"
+                value="25"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <div class="flex justify-between mt-2 text-sm text-gray-600">
+                <span>$0</span>
+                <span>$50</span>
+              </div>
+            </div>
+            <h3 class="font-semibold mb-4">Dietary Preferences</h3>
+            <div class="space-y-3">
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-primary" />
+                <span>Vegetarian</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-primary" />
+                <span>Vegan</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="w-4 h-4 text-primary" />
+                <span>Gluten Free</span>
+              </label>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="overflow-x-auto scrollbar-hide mb-8">
+              <div class="flex gap-4 min-w-max">
+                <button
+                  class="category-active px-6 py-2 text-gray-700 font-medium"
+                  data-category="all"
+                >
+                  All Items
+                </button>
+                <button
+                  class="px-6 py-2 text-gray-700 font-medium"
+                  data-category="coffee"
+                >
+                  Coffee
+                </button>
+                <button
+                  class="px-6 py-2 text-gray-700 font-medium"
+                  data-category="tea"
+                >
+                  Tea
+                </button>
+                <button
+                  class="px-6 py-2 text-gray-700 font-medium"
+                  data-category="pastries"
+                >
+                  Pastries
+                </button>
+                <button
+                  class="px-6 py-2 text-gray-700 font-medium"
+                  data-category="desserts"
+                >
+                  Desserts
+                </button>
+                <button
+                  class="px-6 py-2 text-gray-700 font-medium"
+                  data-category="juices"
+                >
+                  Juices
+                </button>
+              </div>
+            </div>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              id="menuItems"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="cart"
+      class="fixed inset-y-0 right-0 w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50"
+    >
+      <div class="h-full flex flex-col">
+        <div class="p-4 border-b">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-semibold">Your Cart</h3>
+            <button class="text-gray-500 hover:text-gray-700" id="closeCartBtn">
+              <i class="ri-close-line text-2xl"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4" id="cartItems"></div>
+        <div class="p-4 border-t">
+          <div class="flex justify-between mb-4">
+            <span class="font-semibold">Total:</span>
+            <span class="font-semibold" id="cartTotal">$0.00</span>
+          </div>
+          <a
+            href="checkout.html"
+            
+            class="block"
+          >
+            <button
+              class="!rounded-button bg-primary hover:bg-primary/90 text-white w-full py-3"
+            >
+              Proceed to Checkout
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      id="customizeModal"
+      class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg w-full max-w-md p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-semibold">Customize Your Order</h3>
+          <button class="text-gray-500 hover:text-gray-700" id="closeModalBtn">
+            <i class="ri-close-line text-2xl"></i>
+          </button>
+        </div>
+        <div id="customizeContent"></div>
+      </div>
+    </div>
+    <script>
+      const menuData = [
+        {
+          id: 1,
+          name: "Signature Espresso",
+          category: "coffee",
+          price: 3.99,
+          description: "Rich and bold espresso shot",
+          image:
+            "https://public.readdy.ai/ai/img_res/c2ff437c9c47860326a00d754d6ec108.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Extra Shot", "Flavored Syrup", "Whipped Cream"],
+          },
+        },
+        {
+          id: 2,
+          name: "Cappuccino",
+          category: "coffee",
+          price: 4.49,
+          description:
+            "Classic Italian coffee with equal parts espresso, steamed milk and milk foam",
+          image:
+            "https://public.readdy.ai/ai/img_res/803e59aa21ecb4369c5d4e5bb2330687.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Extra Shot", "Cinnamon", "Chocolate Powder"],
+          },
+        },
+        {
+          id: 3,
+          name: "Matcha Green Tea Latte",
+          category: "tea",
+          price: 4.99,
+          description: "Premium Japanese matcha with steamed milk",
+          image:
+            "https://public.readdy.ai/ai/img_res/8b9d9be4c1a7a630ebdf67b0d4a8ed2c.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Extra Matcha", "Vanilla Syrup", "Almond Milk"],
+          },
+        },
+        {
+          id: 4,
+          name: "Classic English Breakfast Tea",
+          category: "tea",
+          price: 3.49,
+          description: "Traditional black tea blend served with optional milk",
+          image:
+            "https://public.readdy.ai/ai/img_res/1066d6d81e1f6e3359862a89d428d76d.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Milk", "Honey", "Lemon"],
+          },
+        },
+        {
+          id: 5,
+          name: "Chamomile Herbal Tea",
+          category: "tea",
+          price: 3.99,
+          description: "Soothing caffeine-free herbal infusion",
+          image:
+            "https://public.readdy.ai/ai/img_res/610ab5fdcea9dacab96f53f11eb32100.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Honey", "Lemon", "Mint Leaves"],
+          },
+        },
+        {
+          id: 6,
+          name: "Butter Croissant",
+          category: "pastries",
+          price: 3.49,
+          description: "Flaky, buttery French-style croissant",
+          image:
+            "https://public.readdy.ai/ai/img_res/f223f5d62bb524cb489a8ff83d914ecc.jpg",
+          options: {
+            extras: ["Warm", "Butter", "Jam"],
+          },
+        },
+        {
+          id: 7,
+          name: "Club Sandwich",
+          category: "pastries",
+          price: 8.99,
+          description:
+            "Triple-decker sandwich with chicken, bacon, lettuce, and tomato",
+          image:
+            "https://public.readdy.ai/ai/img_res/9d1256d530a3597ea195959e630dd5dd.jpg",
+          options: {
+            extras: ["Extra Cheese", "Avocado", "Egg"],
+          },
+        },
+        {
+          id: 8,
+          name: "Chocolate Cake",
+          category: "desserts",
+          price: 5.99,
+          description: "Rich chocolate layer cake with ganache frosting",
+          image:
+            "https://public.readdy.ai/ai/img_res/116159e28c5cfbb7284b07b340bd614d.jpg",
+          options: {
+            extras: ["Extra Frosting", "Ice Cream", "Berries"],
+          },
+        },
+        {
+          id: 9,
+          name: "Mango Shake",
+          category: "juices",
+          price: 4.99,
+          description: "Creamy mango shake made with fresh mangoes and milk",
+          image:
+            "https://public.readdy.ai/ai/img_res/180a0d04731fe2a748be9d23c76657c9.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Extra Mango", "Whipped Cream", "Ice Cream"],
+          },
+        },
+        {
+          id: 10,
+          name: "Fresh Lime Juice",
+          category: "juices",
+          price: 3.49,
+          description: "Refreshing lime juice with mint and optional sugar",
+          image:
+            "https://public.readdy.ai/ai/img_res/da5cfc3259e0419839eb72d5200a54e4.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Extra Lime", "Mint", "Sugar"],
+          },
+        },
+        {
+          id: 11,
+          name: "Royal Falooda",
+          category: "desserts",
+          price: 6.99,
+          description:
+            "Traditional dessert drink with rose syrup, basil seeds, and ice cream",
+          image:
+            "https://public.readdy.ai/ai/img_res/6412dbd55b82bb07dc2e132208cc003a.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Extra Ice Cream", "Dry Fruits", "Rose Syrup"],
+          },
+        },
+        {
+          id: 12,
+          name: "Watermelon Juice",
+          category: "juices",
+          price: 4.49,
+          description: "Fresh watermelon juice with mint leaves",
+          image:
+            "https://public.readdy.ai/ai/img_res/a9b2eace28017257d5297d33c1abb16a.jpg",
+          options: {
+            sizes: ["Small", "Medium", "Large"],
+            extras: ["Mint Leaves", "Lemon", "Sugar"],
+          },
+        },
+      ];
+      let cart = [];
+      let currentItem = null;
+      function renderMenu(category = "all") {
+        const menuContainer = document.getElementById("menuItems");
+        menuContainer.innerHTML = "";
+        const filteredItems =
+          category === "all"
+            ? menuData
+            : menuData.filter((item) => item.category === category);
+        filteredItems.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className = "bg-white rounded-lg shadow-lg overflow-hidden";
+          itemElement.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover">
+      <div class="p-6">
+      <div class="flex justify-between items-center mb-2">
+      <h3 class="text-xl font-semibold">${item.name}</h3>
+      <span class="text-primary font-semibold">$${item.price.toFixed(2)}</span>
+      </div>
+      <p class="text-gray-600 mb-4">${item.description}</p>
+      <div class="flex gap-2">
+      <button onclick="showCustomizeModal(${item.id})" class="!rounded-button flex-1 bg-primary hover:bg-primary/90 text-white px-6 py-2">
+      Customize
+      </button>
+      <button onclick="quickAddToCart(${item.id})" class="!rounded-button w-12 h-10 flex items-center justify-center bg-white border border-primary text-primary hover:bg-primary/10">
+      <i class="ri-add-line"></i>
+      </button>
+      </div>
+      </div>
+      `;
+          menuContainer.appendChild(itemElement);
+        });
+      }
+      function showCustomizeModal(itemId) {
+        currentItem = menuData.find((item) => item.id === itemId);
+        const modal = document.getElementById("customizeModal");
+        const content = document.getElementById("customizeContent");
+        content.innerHTML = `
+      <div class="space-y-6">
+      ${
+        currentItem.options.sizes
+          ? `
+      <div>
+      <h4 class="font-medium mb-2">Size</h4>
+      <div class="flex gap-2">
+      ${currentItem.options.sizes
+        .map(
+          (size) => `
+      <button class="!rounded-button flex-1 py-2 border size-option ${size === "Medium" ? "bg-primary text-white" : "border-gray-200"}"
+      data-size="${size}">${size}</button>
+      `,
+        )
+        .join("")}
+      </div>
+      </div>
+      `
+          : ""
+      }
+      <div>
+      <h4 class="font-medium mb-2">Extras</h4>
+      <div class="space-y-2">
+      ${currentItem.options.extras
+        .map(
+          (extra) => `
+      <label class="flex items-center gap-2">
+      <input type="checkbox" class="w-4 h-4 text-primary">
+      <span>${extra}</span>
+      </label>
+      `,
+        )
+        .join("")}
+      </div>
+      </div>
+      <div>
+      <h4 class="font-medium mb-2">Special Instructions</h4>
+      <textarea class="w-full p-2 border rounded-lg" rows="2" placeholder="Any special requests?"></textarea>
+      </div>
+      <div class="flex items-center gap-4 mt-4">
+      <div class="flex items-center border rounded-lg">
+      <button class="px-3 py-2 text-gray-600 hover:text-primary" onclick="updateQuantity(-1)">-</button>
+      <span class="px-3 py-2" id="itemQuantity">1</span>
+      <button class="px-3 py-2 text-gray-600 hover:text-primary" onclick="updateQuantity(1)">+</button>
+      </div>
+      <button onclick="addCustomizedToCart()" class="!rounded-button flex-1 bg-primary hover:bg-primary/90 text-white py-2">
+      Add to Cart - $${currentItem.price.toFixed(2)}
+      </button>
+      </div>
+      </div>
+      `;
+        modal.style.display = "flex";
+        document.querySelectorAll(".size-option").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".size-option").forEach((b) => {
+              b.classList.remove("bg-primary", "text-white");
+              b.classList.add("border-gray-200");
+            });
+            btn.classList.add("bg-primary", "text-white");
+            btn.classList.remove("border-gray-200");
+          });
+        });
+      }
+      function updateQuantity(change) {
+        const quantityElement = document.getElementById("itemQuantity");
+        let quantity = parseInt(quantityElement.textContent);
+        quantity = Math.max(1, quantity + change);
+        quantityElement.textContent = quantity;
+      }
+      function quickAddToCart(itemId) {
+        const item = menuData.find((i) => i.id === itemId);
+        if (item) {
+          const cartItem = {
+            ...item,
+            quantity: 1,
+            customizations: {
+              size: item.options.sizes ? "Medium" : null,
+              extras: [],
+            },
+          };
+          addToCart(cartItem);
+        }
+      }
+      function addCustomizedToCart() {
+        const quantity = parseInt(
+          document.getElementById("itemQuantity").textContent,
+        );
+        const size = document.querySelector(".size-option.bg-primary")?.dataset.size;
+        const extras = Array.from(
+          document.querySelectorAll('input[type="checkbox"]:checked'),
+        ).map((checkbox) => checkbox.nextElementSibling.textContent);
+        const instructions = document.querySelector("textarea").value;
+        const cartItem = {
+          ...currentItem,
+          quantity,
+          customizations: {
+            size,
+            extras,
+            instructions,
+          },
+        };
+        addToCart(cartItem);
+        closeCustomizeModal();
+      }
+      function addToCart(item) {
+        const existingItemIndex = cart.findIndex(
+          (i) =>
+            i.id === item.id &&
+            JSON.stringify(i.customizations) === JSON.stringify(item.customizations),
+        );
+        if (existingItemIndex !== -1) {
+          cart[existingItemIndex].quantity += item.quantity;
+        } else {
+          cart.push(item);
+        }
+        updateCart();
+        showToast(`Added ${item.name} to cart`);
+      }
+      function updateCart() {
+        const cartItems = document.getElementById("cartItems");
+        const cartCount = document.getElementById("cartCount");
+        const cartTotal = document.getElementById("cartTotal");
+        cartItems.innerHTML = "";
+        let total = 0;
+        cart.forEach((item, index) => {
+          const itemElement = document.createElement("div");
+          itemElement.className = "flex items-center gap-4 mb-4";
+          itemElement.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded">
+      <div class="flex-1">
+      <h4 class="font-semibold">${item.name}</h4>
+      ${item.customizations.size ? `<p class="text-sm text-gray-600">${item.customizations.size}</p>` : ""}
+      ${
+        item.customizations.extras.length
+          ? `
+      <p class="text-sm text-gray-600">${item.customizations.extras.join(", ")}</p>
+      `
+          : ""
+      }
+      ${
+        item.customizations.instructions
+          ? `
+      <p class="text-sm text-gray-600 italic">${item.customizations.instructions}</p>
+      `
+          : ""
+      }
+      <div class="flex items-center gap-2 mt-2">
+      <button onclick="updateCartItemQuantity(${index}, ${item.quantity - 1})" class="!rounded-button px-2 py-1 bg-gray-200">-</button>
+      <span>${item.quantity}</span>
+      <button onclick="updateCartItemQuantity(${index}, ${item.quantity + 1})" class="!rounded-button px-2 py-1 bg-gray-200">+</button>
+      </div>
+      </div>
+      <div class="text-right">
+      <p class="font-semibold">$${(item.price * item.quantity).toFixed(2)}</p>
+      <button onclick="removeFromCart(${index})" class="text-red-500 text-sm">Remove</button>
+      </div>
+      `;
+          cartItems.appendChild(itemElement);
+          total += item.price * item.quantity;
+        });
+        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartTotal.textContent = `$${total.toFixed(2)}`;
+      }
+      function updateCartItemQuantity(index, newQuantity) {
+        if (newQuantity < 1) {
+          removeFromCart(index);
+          return;
+        }
+        cart[index].quantity = newQuantity;
+        updateCart();
+      }
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+      }
+      function closeCustomizeModal() {
+        document.getElementById("customizeModal").style.display = "none";
+      }
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className =
+          "fixed bottom-4 right-4 bg-primary text-white px-6 py-3 rounded shadow-lg transform transition-all duration-300 translate-y-full";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.remove("translate-y-full");
+        }, 100);
+        setTimeout(() => {
+          toast.classList.add("translate-y-full");
+          setTimeout(() => {
+            document.body.removeChild(toast);
+          }, 300);
+        }, 3000);
+      }
+      document.getElementById("cartBtn").addEventListener("click", () => {
+        document.getElementById("cart").classList.toggle("translate-x-full");
+      });
+      document.getElementById("closeCartBtn").addEventListener("click", () => {
+        document.getElementById("cart").classList.add("translate-x-full");
+      });
+      document
+        .getElementById("closeModalBtn")
+        .addEventListener("click", closeCustomizeModal);
+      document.querySelectorAll("[data-category]").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll("[data-category]").forEach((btn) => {
+            btn.classList.remove("category-active");
+          });
+          button.classList.add("category-active");
+          renderMenu(button.dataset.category);
+        });
+      });
+      renderMenu();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - Brew Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8B4513",
+              secondary: "#D2691E",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .step-active {
+      color: #8B4513;
+      border-color: #8B4513;
+      background: #8B4513;
+      }
+      .step-active .step-number {
+      @apply bg-white text-primary;
+      }
+      .step-active .step-text {
+      @apply text-white;
+      }
+    </style>
+  </head>
+  <body class="font-['Poppins'] bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center gap-8">
+            <a
+              href="https://readdy.ai/home/9072eaa1-d0ac-4213-8849-870058d7d9b7/1ca51725-0093-4449-85ae-a879b8c38aaf"
+              data-readdy="true"
+              class="font-['Pacifico'] text-primary text-3xl"
+              >logo</a
+            >
+          </div>
+          <div class="flex items-center space-x-6">
+            <button
+              class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary"
+            >
+              <i class="ri-user-line text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex items-center gap-4 mb-8">
+        <a
+          href="https://readdy.ai/home/9072eaa1-d0ac-4213-8849-870058d7d9b7/9c283e85-3a22-4888-b071-bd9931aca874"
+          data-readdy="true"
+          class="text-gray-600 hover:text-primary flex items-center gap-1"
+        >
+          <i class="ri-arrow-left-line"></i>
+          Back to Cart
+        </a>
+      </div>
+      <div class="flex justify-between items-center mb-12">
+        <div class="flex items-center gap-4">
+          <div
+            class="step-active flex items-center px-6 py-3 rounded-full border"
+          >
+            <span
+              class="step-number w-8 h-8 rounded-full flex items-center justify-center mr-2"
+              >1</span
+            >
+            <span class="step-text">Order Details</span>
+          </div>
+          <div class="h-[2px] w-12 bg-gray-200"></div>
+          <div
+            class="flex items-center px-6 py-3 rounded-full border border-gray-200 text-gray-400"
+          >
+            <span
+              class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-2"
+              >2</span
+            >
+            <span>Payment</span>
+          </div>
+          <div class="h-[2px] w-12 bg-gray-200"></div>
+          <div
+            class="flex items-center px-6 py-3 rounded-full border border-gray-200 text-gray-400"
+          >
+            <span
+              class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-2"
+              >3</span
+            >
+            <span>Confirmation</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-8">
+        <div class="col-span-2 space-y-8">
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h2 class="text-xl font-semibold mb-6">Delivery Method</h2>
+            <div class="flex gap-4 mb-6">
+              <button
+                class="delivery-option !rounded-button flex-1 border-2 border-primary bg-primary/5 p-4 text-left"
+                data-method="delivery"
+              >
+                <div class="flex items-center gap-3 mb-2">
+                  <i class="ri-bike-line text-primary text-xl"></i>
+                  <span class="font-medium">Delivery</span>
+                </div>
+                <p class="text-sm text-gray-600">
+                  Estimated delivery time: 30-45 mins
+                </p>
+              </button>
+              <button
+                class="delivery-option !rounded-button flex-1 border-2 border-gray-200 p-4 text-left"
+                data-method="pickup"
+              >
+                <div class="flex items-center gap-3 mb-2">
+                  <i class="ri-store-2-line text-gray-600 text-xl"></i>
+                  <span class="font-medium">Pickup</span>
+                </div>
+                <p class="text-sm text-gray-600">
+                  Ready for pickup in: 15-20 mins
+                </p>
+              </button>
+            </div>
+            <div id="deliveryAddressForm">
+              <h3 class="font-medium mb-4">Delivery Address</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2">
+                  <input
+                    type="text"
+                    placeholder="Street Address"
+                    class="w-full px-4 py-2 rounded border border-gray-200"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Apartment / Suite / Floor"
+                    class="w-full px-4 py-2 rounded border border-gray-200"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    class="w-full px-4 py-2 rounded border border-gray-200"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="State"
+                    class="w-full px-4 py-2 rounded border border-gray-200"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="ZIP Code"
+                    class="w-full px-4 py-2 rounded border border-gray-200"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <textarea
+                    placeholder="Delivery Instructions (Optional)"
+                    class="w-full px-4 py-2 rounded border border-gray-200"
+                    rows="2"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div id="pickupStoreForm" class="hidden">
+              <h3 class="font-medium mb-4">Select Pickup Store</h3>
+              <div class="space-y-3">
+                <label
+                  class="flex items-center gap-3 p-4 border rounded cursor-pointer"
+                >
+                  <input type="radio" name="store" checked />
+                  <div>
+                    <p class="font-medium">Downtown Store</p>
+                    <p class="text-sm text-gray-600">
+                      123 Main St, New York, NY 10001
+                    </p>
+                  </div>
+                </label>
+                <label
+                  class="flex items-center gap-3 p-4 border rounded cursor-pointer"
+                >
+                  <input type="radio" name="store" />
+                  <div>
+                    <p class="font-medium">Uptown Store</p>
+                    <p class="text-sm text-gray-600">
+                      456 Park Ave, New York, NY 10022
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h2 class="text-xl font-semibold mb-6">Contact Information</h2>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  class="w-full px-4 py-2 rounded border border-gray-200"
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  class="w-full px-4 py-2 rounded border border-gray-200"
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  class="w-full px-4 py-2 rounded border border-gray-200"
+                />
+              </div>
+              <div>
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  class="w-full px-4 py-2 rounded border border-gray-200"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h2 class="text-xl font-semibold mb-6">Payment Method</h2>
+            <div class="space-y-4">
+              <button
+                class="payment-method !rounded-button w-full flex items-center gap-4 p-4 border-2 border-primary bg-primary/5"
+              >
+                <i class="ri-bank-card-line text-primary text-xl"></i>
+                <span class="font-medium">Credit / Debit Card</span>
+              </button>
+              <button
+                class="payment-method !rounded-button w-full flex items-center gap-4 p-4 border-2 border-gray-200"
+              >
+                <i class="ri-apple-fill text-xl"></i>
+                <span class="font-medium">Apple Pay</span>
+              </button>
+              <button
+                class="payment-method !rounded-button w-full flex items-center gap-4 p-4 border-2 border-gray-200"
+              >
+                <i class="ri-google-fill text-xl"></i>
+                <span class="font-medium">Google Pay</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="bg-white rounded-lg p-6 shadow-sm sticky top-8">
+            <h2 class="text-xl font-semibold mb-6">Order Summary</h2>
+            <div class="space-y-4 mb-6" id="orderItems"></div>
+            <div class="border-t pt-4 mb-6">
+              <div class="flex items-center gap-2 mb-4">
+                <input
+                  type="text"
+                  placeholder="Discount Code"
+                  class="flex-1 px-4 py-2 rounded border border-gray-200"
+                />
+                <button
+                  class="!rounded-button bg-primary hover:bg-primary/90 text-white px-6 py-2"
+                >
+                  Apply
+                </button>
+              </div>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Subtotal</span>
+                  <span id="subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Delivery Fee</span>
+                  <span id="deliveryFee">$2.99</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Tax</span>
+                  <span id="tax">$0.00</span>
+                </div>
+              </div>
+              <div
+                class="flex justify-between font-semibold text-lg mt-4 pt-4 border-t"
+              >
+                <span>Total</span>
+                <span id="total">$0.00</span>
+              </div>
+            </div>
+            <a
+              href="payment.html"
+            >
+              <button
+                class="!rounded-button w-full bg-primary hover:bg-primary/90 text-white py-3 font-medium"
+              >
+                Place Order
+              </button>
+            </a>
+            <div
+              id="errorModal"
+              class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+            >
+              <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+                <h3 class="text-lg font-semibold text-red-600 mb-2">Error</h3>
+                <p id="errorMessage" class="text-gray-600 mb-4">
+                  Please fill in all required fields.
+                </p>
+                <button
+                  onclick="closeErrorModal()"
+                  class="!rounded-button w-full bg-primary text-white py-2"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const mockOrderItems = [
+        {
+          id: 1,
+          name: "Signature Espresso",
+          size: "Medium",
+          extras: ["Extra Shot"],
+          quantity: 2,
+          price: 3.99,
+        },
+        {
+          id: 2,
+          name: "Butter Croissant",
+          extras: ["Butter"],
+          quantity: 1,
+          price: 3.49,
+        },
+        {
+          id: 3,
+          name: "Cappuccino",
+          size: "Large",
+          extras: ["Cinnamon"],
+          quantity: 1,
+          price: 4.49,
+        },
+      ];
+      function renderOrderItems() {
+        const container = document.getElementById("orderItems");
+        container.innerHTML = mockOrderItems
+          .map(
+            (item) => `
+      <div class="flex justify-between">
+      <div>
+      <p class="font-medium">${item.name}</p>
+      <p class="text-sm text-gray-600">
+      ${item.size ? item.size + " • " : ""}${item.extras.join(", ")}
+      </p>
+      <p class="text-sm text-gray-600">Qty: ${item.quantity}</p>
+      </div>
+      <span>$${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+      `,
+          )
+          .join("");
+        const subtotal = mockOrderItems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0,
+        );
+        document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
+        document.getElementById("tax").textContent =
+          `$${(subtotal * 0.08).toFixed(2)}`;
+        document.getElementById("total").textContent =
+          `$${(subtotal + 2.99 + subtotal * 0.08).toFixed(2)}`;
+      }
+      document.querySelectorAll(".delivery-option").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".delivery-option").forEach((b) => {
+            b.classList.remove("border-primary", "bg-primary/5");
+            b.classList.add("border-gray-200");
+          });
+          btn.classList.add("border-primary", "bg-primary/5");
+          btn.classList.remove("border-gray-200");
+          const method = btn.dataset.method;
+          document.getElementById("deliveryAddressForm").style.display =
+            method === "delivery" ? "block" : "none";
+          document.getElementById("pickupStoreForm").style.display =
+            method === "pickup" ? "block" : "none";
+        });
+      });
+      document.querySelectorAll(".payment-method").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".payment-method").forEach((b) => {
+            b.classList.remove("border-primary", "bg-primary/5");
+            b.classList.add("border-gray-200");
+          });
+          btn.classList.add("border-primary", "bg-primary/5");
+          btn.classList.remove("border-gray-200");
+        });
+      });
+      renderOrderItems();
+      function validateAndProceed() {
+        const requiredFields = {
+          "Street Address": document.querySelector(
+            'input[placeholder="Street Address"]',
+          ).value,
+          City: document.querySelector('input[placeholder="City"]').value,
+          State: document.querySelector('input[placeholder="State"]').value,
+          "ZIP Code": document.querySelector('input[placeholder="ZIP Code"]').value,
+          "First Name": document.querySelector('input[placeholder="First Name"]')
+            .value,
+          "Last Name": document.querySelector('input[placeholder="Last Name"]').value,
+          "Email Address": document.querySelector(
+            'input[placeholder="Email Address"]',
+          ).value,
+          "Phone Number": document.querySelector('input[placeholder="Phone Number"]')
+            .value,
+        };
+        const emptyFields = Object.entries(requiredFields)
+          .filter(([_, value]) => !value.trim())
+          .map(([field]) => field);
+        if (emptyFields.length > 0) {
+          document.getElementById("errorMessage").textContent =
+            `Please fill in the following fields: ${emptyFields.join(", ")}`;
+          document.getElementById("errorModal").classList.remove("hidden");
+          return;
+        }
+        window.location.href =
+          "https://readdy.ai/home/9072eaa1-d0ac-4213-8849-870058d7d9b7/7c6d3c9a-9ad5-4f62-bad7-5c3ee3b82577";
+      }
+      function closeErrorModal() {
+        document.getElementById("errorModal").classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>

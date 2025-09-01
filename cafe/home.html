@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brew Haven - Artisan Coffee House</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8B4513",
+              secondary: "#D2691E",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .parallax {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      }
+      .menu-active {
+      color: #8B4513;
+      border-bottom: 2px solid #8B4513;
+      }
+    </style>
+  </head>
+  <body class="font-['Poppins'] bg-white">
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <a href="#" class="font-['Pacifico'] text-primary text-3xl">logo</a>
+          </div>
+          <div class="hidden md:flex items-center space-x-8">
+            <a
+              href="#home"
+              class="menu-active text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium"
+              >Home</a
+            >
+            <a
+              href="#about"
+              class="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium"
+              >About</a
+            >
+            <a
+              href="#menu"
+              class="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium"
+              >Menu</a
+            >
+            <a
+              href="#location"
+              class="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium"
+              >Location</a
+            >
+            <a
+              href="#contact"
+              class="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium"
+              >Contact</a
+            >
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <button
+                  id="userMenuBtn"
+                  class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary"
+                  onclick="isUserLoggedIn ? toggleUserMenu() : openAuthModal('login')"
+                >
+                  <i class="ri-user-line text-xl"></i>
+                </button>
+                <div
+                  id="userDropdown"
+                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50"
+                >
+                  <a
+                    href="#"
+                    onclick="openAuthModal('login')"
+                    class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                    >Sign In</a
+                  >
+                  <a
+                    href="#"
+                    onclick="openAuthModal('signup')"
+                    class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                    >Create Account</a
+                  >
+                </div>
+              </div>
+              <script>
+                const userMenuBtn = document.getElementById("userMenuBtn");
+                const userDropdown = document.getElementById("userDropdown");
+                let isUserLoggedIn = false;
+                function toggleUserMenu() {
+                  userDropdown.classList.toggle("hidden");
+                }
+                function updateUserMenu() {
+                  userDropdown.innerHTML = isUserLoggedIn
+                    ? `
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm">My Profile</a>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm">Order History</a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm" onclick="signOut()">Sign Out</a>
+                `
+                    : `
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm">Sign In</a>
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm">Create Account</a>
+                `;
+                }
+                function signOut() {
+                  isUserLoggedIn = false;
+                  updateUserMenu();
+                  toggleUserMenu();
+                }
+                document.addEventListener("click", (event) => {
+                  if (
+                    !userMenuBtn.contains(event.target) &&
+                    !userDropdown.contains(event.target)
+                  ) {
+                    userDropdown.classList.add("hidden");
+                  }
+                });
+                userMenuBtn.addEventListener("click", (event) => {
+                  event.stopPropagation();
+                  if (isUserLoggedIn) {
+                    toggleUserMenu();
+                  }
+                });
+                updateUserMenu();
+              </script>
+              <button
+                class="w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary relative"
+                id="cartBtn"
+              >
+                <i class="ri-shopping-cart-line text-xl"></i>
+                <span
+                  class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                  id="cartCount"
+                  >0</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section
+      id="home"
+      class="relative min-h-screen pt-16"
+      style="background-image: url('https://public.readdy.ai/ai/img_res/6305fafc71e041d16ba4138bcb4a2e65.jpg'); background-size: cover; background-position: center;"
+    >
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div
+        class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center min-h-screen"
+      >
+        <div class="max-w-4xl">
+          <h1
+            class="text-7xl font-['Playfair_Display'] font-bold text-white mb-8 leading-tight"
+          >
+            Artisanal Coffee & Cozy Moments
+          </h1>
+          <p class="text-2xl text-white/90 mb-12 leading-relaxed">
+            Experience the perfect blend of tradition and innovation in every
+            cup. Visit us or order online for a taste of excellence.
+          </p>
+          <div class="flex space-x-6">
+            <a
+              href="order.html"
+
+            >
+              <button
+                class="!rounded-button bg-primary hover:bg-primary/90 text-white px-10 py-4 text-lg font-medium"
+              >
+                Order Now
+              </button>
+            </a>
+            <button
+              class="!rounded-button bg-white hover:bg-white/90 text-primary px-10 py-4 text-lg font-medium"
+            >
+              Visit Us
+            </button>
+            <button
+              onclick="scrollToMenu()"
+              class="!rounded-button border-2 border-white text-white hover:bg-white/10 px-10 py-4 text-lg font-medium"
+            >
+              Explore Menu
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          class="text-3xl font-['Playfair_Display'] font-bold text-center mb-12"
+        >
+          Special Offers
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img
+              src="https://public.readdy.ai/ai/img_res/36cf77b40bd419d8c6326744cbc0d4e9.jpg"
+              alt="Morning Bundle"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2">Morning Bundle</h3>
+              <p class="text-gray-600 mb-4">
+                Get any coffee and croissant for $8.99
+              </p>
+              <button
+                class="!rounded-button bg-primary hover:bg-primary/90 text-white px-6 py-2 w-full"
+              >
+                Redeem Now
+              </button>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img
+              src="https://public.readdy.ai/ai/img_res/086fcc6307d68815100b2baf16d17f13.jpg"
+              alt="Afternoon Delight"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2">Afternoon Delight</h3>
+              <p class="text-gray-600 mb-4">50% off on pastries after 4 PM</p>
+              <button
+                class="!rounded-button bg-primary hover:bg-primary/90 text-white px-6 py-2 w-full"
+              >
+                Redeem Now
+              </button>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <img
+              src="https://public.readdy.ai/ai/img_res/71e3f57c73da6a41373f5a52a6a4799b.jpg"
+              alt="Loyalty Rewards"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2">Loyalty Rewards</h3>
+              <p class="text-gray-600 mb-4">
+                Join now and get your 10th coffee free
+              </p>
+              <button
+                class="!rounded-button bg-primary hover:bg-primary/90 text-white px-6 py-2 w-full"
+              >
+                Join Program
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="menu" class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          class="text-3xl font-['Playfair_Display'] font-bold text-center mb-12"
+        >
+          Our Menu
+        </h2>
+        <div class="flex justify-center space-x-4 mb-8">
+          <button
+            class="!rounded-button transition-colors duration-300 bg-primary text-white px-6 py-2"
+            data-category="all"
+          >
+            All
+          </button>
+          <button
+            class="!rounded-button transition-colors duration-300 bg-white text-primary px-6 py-2"
+            data-category="coffee"
+          >
+            Coffee
+          </button>
+          <button
+            class="!rounded-button transition-colors duration-300 bg-white text-primary px-6 py-2"
+            data-category="tea"
+          >
+            Tea
+          </button>
+          <button
+            class="!rounded-button transition-colors duration-300 bg-white text-primary px-6 py-2"
+            data-category="pastries"
+          >
+            Pastries
+          </button>
+          <button
+            class="!rounded-button transition-colors duration-300 bg-white text-primary px-6 py-2"
+            data-category="juices"
+          >
+            Juices
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="menuItems">
+          <!-- Menu items will be dynamically populated -->
+        </div>
+      </div>
+    </section>
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          class="text-3xl font-['Playfair_Display'] font-bold text-center mb-12"
+        >
+          What Our Customers Say
+        </h2>
+        <div class="relative">
+          <div class="overflow-hidden" id="reviewSlider">
+            <div class="flex transition-transform duration-500 ease-in-out">
+              <div class="min-w-full px-4">
+                <div
+                  class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto"
+                >
+                  <div class="flex items-center mb-6">
+                    <img
+                      src="https://public.readdy.ai/ai/img_res/cb62a60a540d4bd35dc4bf9addec59ee.jpg"
+                      alt="Customer"
+                      class="w-20 h-20 rounded-full object-cover"
+                    />
+                    <div class="ml-6">
+                      <h4 class="text-xl font-semibold">Emily Thompson</h4>
+                      <div class="flex text-yellow-400 text-xl">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-gray-600 text-lg leading-relaxed">
+                    "The best coffee I've had in years! The atmosphere is
+                    perfect for both work and relaxation. Their pastries are to
+                    die for! I especially love their morning blend and the cozy
+                    corner seats by the window."
+                  </p>
+                </div>
+              </div>
+              <div class="min-w-full px-4">
+                <div
+                  class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto"
+                >
+                  <div class="flex items-center mb-6">
+                    <img
+                      src="https://public.readdy.ai/ai/img_res/fb41d3d8925829d97b47103d90ef265e.jpg"
+                      alt="Customer"
+                      class="w-20 h-20 rounded-full object-cover"
+                    />
+                    <div class="ml-6">
+                      <h4 class="text-xl font-semibold">Samuel Chen</h4>
+                      <div class="flex text-yellow-400 text-xl">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-gray-600 text-lg leading-relaxed">
+                    "As a coffee enthusiast, I can confidently say their cold
+                    brew is exceptional. The staff is knowledgeable and always
+                    ready to make recommendations. The attention to detail in
+                    every cup makes this place a must-visit spot!"
+                  </p>
+                </div>
+              </div>
+              <div class="min-w-full px-4">
+                <div
+                  class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto"
+                >
+                  <div class="flex items-center mb-6">
+                    <img
+                      src="https://public.readdy.ai/ai/img_res/d1fc82524687dceef89163ffa241985a.jpg"
+                      alt="Customer"
+                      class="w-20 h-20 rounded-full object-cover"
+                    />
+                    <div class="ml-6">
+                      <h4 class="text-xl font-semibold">Alan Martinez</h4>
+                      <div class="flex text-yellow-400 text-xl">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-gray-600 text-lg leading-relaxed">
+                    "I love working from this cafe! The WiFi is reliable, the
+                    coffee is consistently great, and their almond croissants
+                    are simply amazing. The ambient music and lighting create
+                    the perfect atmosphere for remote work or casual meetings."
+                  </p>
+                </div>
+              </div>
+              <div class="min-w-full px-4">
+                <div
+                  class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto"
+                >
+                  <div class="flex items-center mb-6">
+                    <img
+                      src="https://public.readdy.ai/ai/img_res/180602640bf21f460f84240f521c3859.jpg"
+                      alt="Customer"
+                      class="w-20 h-20 rounded-full object-cover"
+                    />
+                    <div class="ml-6">
+                      <h4 class="text-xl font-semibold">Fariz Rahman</h4>
+                      <div class="flex text-yellow-400 text-xl">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-gray-600 text-lg leading-relaxed">
+                    "Their specialty drinks are incredible! I especially love
+                    their seasonal menu items. The ambiance is perfect for both
+                    quiet mornings and afternoon catch-ups with friends. The
+                    baristas' creativity with seasonal specials keeps me coming
+                    back for more."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            onclick="prevSlide()"
+            class="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg text-primary hover:bg-gray-50"
+          >
+            <i class="ri-arrow-left-s-line text-2xl"></i>
+          </button>
+          <button
+            onclick="nextSlide()"
+            class="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg text-primary hover:bg-gray-50"
+          >
+            <i class="ri-arrow-right-s-line text-2xl"></i>
+          </button>
+          <div class="flex justify-center mt-8 space-x-2">
+            <button
+              onclick="goToSlide(0)"
+              class="w-3 h-3 rounded-full bg-primary"
+            ></button>
+            <button
+              onclick="goToSlide(1)"
+              class="w-3 h-3 rounded-full bg-gray-300"
+            ></button>
+            <button
+              onclick="goToSlide(2)"
+              class="w-3 h-3 rounded-full bg-gray-300"
+            ></button>
+            <button
+              onclick="goToSlide(3)"
+              class="w-3 h-3 rounded-full bg-gray-300"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      let currentSlide = 0;
+      const totalSlides = 4;
+      const slider = document.getElementById("reviewSlider").firstElementChild;
+      const indicators = document.querySelectorAll(
+        ".flex.justify-center.mt-8 button",
+      );
+
+      function updateSliderPosition() {
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        indicators.forEach((indicator, index) => {
+          if (index === currentSlide) {
+            indicator.classList.remove("bg-gray-300");
+            indicator.classList.add("bg-primary");
+          } else {
+            indicator.classList.remove("bg-primary");
+            indicator.classList.add("bg-gray-300");
+          }
+        });
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSliderPosition();
+      }
+
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSliderPosition();
+      }
+
+      function goToSlide(slideIndex) {
+        currentSlide = slideIndex;
+        updateSliderPosition();
+      }
+
+      setInterval(nextSlide, 5000);
+    </script>
+    <section id="location" class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          class="text-3xl font-['Playfair_Display'] font-bold text-center mb-12"
+        >
+          Visit Us
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div
+              class="h-96 bg-cover bg-center"
+              style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png')"
+            ></div>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-8">
+            <h3 class="text-2xl font-semibold mb-4">Store Hours</h3>
+            <div class="space-y-2 mb-8">
+              <p class="flex justify-between">
+                <span>Monday - Friday</span><span>7:00 AM - 8:00 PM</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Saturday</span><span>8:00 AM - 9:00 PM</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Sunday</span><span>8:00 AM - 7:00 PM</span>
+              </p>
+            </div>
+            <div class="mb-8">
+              <h4 class="font-semibold mb-2">Address</h4>
+              <p class="text-gray-600">
+                123 Coffee Street, Brewville, BW 12345
+              </p>
+            </div>
+            <button
+              class="!rounded-button bg-primary hover:bg-primary/90 text-white px-6 py-3 w-full"
+            >
+              Get Directions
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="font-['Pacifico'] text-2xl mb-4">logo</h3>
+            <p class="text-gray-400">
+              Crafting perfect moments, one cup at a time.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4">Quick Links</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">About Us</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">Menu</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">Locations</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4">Connect With Us</h4>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="ri-facebook-fill"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="ri-instagram-line"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white"
+                ><i class="ri-twitter-fill"></i
+              ></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4">Newsletter</h4>
+            <form class="flex">
+              <input
+                type="email"
+                placeholder="Your email"
+                class="flex-1 px-4 py-2 rounded-l focus:outline-none text-gray-900"
+              />
+              <button
+                class="!rounded-button bg-primary hover:bg-primary/90 px-4 py-2 rounded-r"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400"
+        >
+          <p>&copy; 2025 Brew Haven. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    <div
+      id="cart"
+      class="fixed inset-y-0 right-0 w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50"
+    >
+      <div class="h-full flex flex-col">
+        <div class="p-4 border-b">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-semibold">Your Cart</h3>
+            <button
+              class="text-gray-500 hover:text-gray-700"
+              onclick="toggleCart()"
+            >
+              <i class="ri-close-line text-2xl"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4" id="cartItems">
+          <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="p-4 border-t">
+          <div class="flex justify-between mb-4">
+            <span class="font-semibold">Total:</span>
+            <span class="font-semibold" id="cartTotal">$0.00</span>
+          </div>
+          <button
+            onclick="checkoutHandler()"
+            class="!rounded-button bg-primary hover:bg-primary/90 text-white w-full py-3"
+          >
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Mock data
+      const menuData = [
+        {
+          id: 1,
+          name: "Cappuccino",
+          category: "coffee",
+          price: 4.99,
+          description:
+            "Classic Italian coffee with equal parts espresso, steamed milk and milk foam",
+          image:
+            "https://public.readdy.ai/ai/img_res/1ee377b2dd946df871ffc7054ee84d13.jpg",
+        },
+        {
+          id: 2,
+          name: "Caramel Macchiato",
+          category: "coffee",
+          price: 5.49,
+          description:
+            "Espresso with vanilla syrup, steamed milk and caramel drizzle",
+          image:
+            "https://public.readdy.ai/ai/img_res/a77879d4a6153ba2918903f52fc5d134.jpg",
+        },
+        {
+          id: 3,
+          name: "Cold Brew",
+          category: "coffee",
+          price: 4.49,
+          description: "Smooth, low-acid coffee brewed with cold water for 12+ hours",
+          image:
+            "https://public.readdy.ai/ai/img_res/3982ddc224ecda1910a9e307ffaac081.jpg",
+        },
+        {
+          id: 4,
+          name: "Earl Grey Tea",
+          category: "tea",
+          price: 3.99,
+          description: "Premium black tea flavored with oil of bergamot",
+          image:
+            "https://public.readdy.ai/ai/img_res/1002e2e639e7bc17aadfc8feaa38970a.jpg",
+        },
+        {
+          id: 5,
+          name: "Green Tea",
+          category: "tea",
+          price: 3.99,
+          description:
+            "Traditional Japanese green tea with a delicate, earthy flavor",
+          image:
+            "https://public.readdy.ai/ai/img_res/025f46fef89762dce32a927c71d8b63d.jpg",
+        },
+        {
+          id: 6,
+          name: "Chamomile Tea",
+          category: "tea",
+          price: 3.99,
+          description: "Caffeine-free herbal tea known for its calming properties",
+          image:
+            "https://public.readdy.ai/ai/img_res/49c6ae965bbef568884268a059c44a3e.jpg",
+        },
+        {
+          id: 7,
+          name: "Almond Croissant",
+          category: "pastries",
+          price: 4.49,
+          description:
+            "Flaky croissant filled with almond cream and topped with sliced almonds",
+          image:
+            "https://public.readdy.ai/ai/img_res/a202af4bc5644738d8652349d3268fc5.jpg",
+        },
+        {
+          id: 8,
+          name: "Chocolate Muffin",
+          category: "pastries",
+          price: 3.99,
+          description: "Rich chocolate muffin with chocolate chips throughout",
+          image:
+            "https://public.readdy.ai/ai/img_res/b81d6508cb8061d234a531016f831fb6.jpg",
+        },
+        {
+          id: 9,
+          name: "Fruit Danish",
+          category: "pastries",
+          price: 4.29,
+          description: "Buttery pastry filled with seasonal fruits and vanilla cream",
+          image:
+            "https://public.readdy.ai/ai/img_res/f20de5b42cca09017877100ebae60b1e.jpg",
+        },
+        {
+          id: 10,
+          name: "Fresh Orange Juice",
+          category: "juices",
+          price: 4.99,
+          description: "Freshly squeezed orange juice, no added sugar",
+          image:
+            "https://public.readdy.ai/ai/img_res/7b16d6d821cd2ade8a9f0c51d4e34722.jpg",
+        },
+        {
+          id: 11,
+          name: "Green Detox Juice",
+          category: "juices",
+          price: 5.99,
+          description: "Blend of kale, cucumber, apple, and ginger",
+          image:
+            "https://public.readdy.ai/ai/img_res/64ff46f8312500428d1fa1d146264d42.jpg",
+        },
+        {
+          id: 12,
+          name: "Berry Blast",
+          category: "juices",
+          price: 5.49,
+          description: "Mixed berry smoothie with yogurt and honey",
+          image:
+            "https://public.readdy.ai/ai/img_res/b0d7b0c0929dfdd2cda372c6f37a2989.jpg",
+        },
+      ];
+      let cart = [];
+      function filterMenu(category) {
+        const buttons = document.querySelectorAll("[data-category]");
+        buttons.forEach((button) => {
+          if (button.dataset.category === category) {
+            button.classList.remove("bg-white", "text-primary");
+            button.classList.add("bg-primary", "text-white");
+          } else {
+            button.classList.remove("bg-primary", "text-white");
+            button.classList.add("bg-white", "text-primary");
+          }
+        });
+        renderMenu(category);
+      }
+      function scrollToMenu() {
+        document.querySelector("#menu").scrollIntoView({ behavior: "smooth" });
+        filterMenu("all");
+      }
+      function renderMenu(category = "all") {
+        const menuContainer = document.getElementById("menuItems");
+        menuContainer.innerHTML = "";
+        const filteredItems =
+          category === "all"
+            ? menuData
+            : menuData.filter((item) => item.category === category);
+        filteredItems.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className = "bg-white rounded-lg shadow-lg overflow-hidden";
+          itemElement.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover">
+      <div class="p-6">
+      <div class="flex justify-between items-center mb-2">
+      <h3 class="text-xl font-semibold">${item.name}</h3>
+      <span class="text-primary font-semibold">$${item.price}</span>
+      </div>
+      <p class="text-gray-600 mb-4">${item.description}</p>
+      <button onclick="addToCart(${item.id})" class="!rounded-button bg-primary hover:bg-primary/90 text-white px-6 py-2 w-full">
+      Add to Cart
+      </button>
+      </div>
+      `;
+          menuContainer.appendChild(itemElement);
+        });
+      }
+      function addToCart(itemId) {
+        const item = menuData.find((i) => i.id === itemId);
+        if (item) {
+          const existingItem = cart.find((i) => i.id === itemId);
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({ ...item, quantity: 1 });
+          }
+          updateCart();
+          showToast(`Added ${item.name} to cart`);
+        }
+      }
+      function updateCart() {
+        const cartItems = document.getElementById("cartItems");
+        const cartCount = document.getElementById("cartCount");
+        const cartTotal = document.getElementById("cartTotal");
+        cartItems.innerHTML = "";
+        let total = 0;
+        cart.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className = "flex items-center gap-4 mb-4";
+          itemElement.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded">
+      <div class="flex-1">
+      <h4 class="font-semibold">${item.name}</h4>
+      <div class="flex items-center gap-2 mt-2">
+      <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="!rounded-button px-2 py-1 bg-gray-200">-</button>
+      <span>${item.quantity}</span>
+      <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="!rounded-button px-2 py-1 bg-gray-200">+</button>
+      </div>
+      </div>
+      <div class="text-right">
+      <p class="font-semibold">$${(item.price * item.quantity).toFixed(2)}</p>
+      <button onclick="removeFromCart(${item.id})" class="text-red-500 text-sm">Remove</button>
+      </div>
+      `;
+          cartItems.appendChild(itemElement);
+          total += item.price * item.quantity;
+        });
+        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartTotal.textContent = `$${total.toFixed(2)}`;
+      }
+      function updateQuantity(itemId, newQuantity) {
+        if (newQuantity < 1) {
+          removeFromCart(itemId);
+          return;
+        }
+        const item = cart.find((i) => i.id === itemId);
+        if (item) {
+          item.quantity = newQuantity;
+          updateCart();
+        }
+      }
+      function removeFromCart(itemId) {
+        cart = cart.filter((item) => item.id !== itemId);
+        updateCart();
+      }
+      function toggleCart() {
+        const cart = document.getElementById("cart");
+        cart.classList.toggle("translate-x-full");
+      }
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className =
+          "fixed bottom-4 right-4 bg-primary text-white px-6 py-3 rounded shadow-lg transform transition-all duration-300 translate-y-full";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.remove("translate-y-full");
+        }, 100);
+        setTimeout(() => {
+          toast.classList.add("translate-y-full");
+          setTimeout(() => {
+            document.body.removeChild(toast);
+          }, 300);
+        }, 3000);
+      }
+      document.getElementById("cartBtn").addEventListener("click", toggleCart);
+      // Initialize menu and add click events to filter buttons
+      renderMenu();
+      document.querySelectorAll("[data-category]").forEach((button) => {
+        button.addEventListener("click", () => filterMenu(button.dataset.category));
+      });
+      // Smooth scroll for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+    </script>
+    <div
+      id="authModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-semibold" id="authTitle">Sign In</h3>
+          <button
+            onclick="closeAuthModal()"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <i class="ri-close-line text-2xl"></i>
+          </button>
+        </div>
+        <div id="loginForm" class="space-y-4">
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="loginEmail"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="loginPassword"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Enter your password"
+            />
+          </div>
+          <button
+            onclick="handleLogin()"
+            class="!rounded-button bg-primary hover:bg-primary/90 text-white w-full py-3"
+          >
+            Sign In
+          </button>
+          <p class="text-center text-gray-600 text-sm">
+            Don't have an account?
+            <a
+              href="#"
+              onclick="switchAuthMode('signup')"
+              class="text-primary hover:text-primary/90"
+              >Sign Up</a
+            >
+          </p>
+        </div>
+        <div id="signupForm" class="hidden space-y-4">
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2"
+              >Name</label
+            >
+            <input
+              type="text"
+              id="signupName"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Enter your name"
+            />
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="signupEmail"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="signupPassword"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Enter your password"
+            />
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="signupConfirmPassword"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Confirm your password"
+            />
+          </div>
+          <button
+            onclick="handleSignup()"
+            class="!rounded-button bg-primary hover:bg-primary/90 text-white w-full py-3"
+          >
+            Sign Up
+          </button>
+          <p class="text-center text-gray-600 text-sm">
+            Already have an account?
+            <a
+              href="#"
+              onclick="switchAuthMode('login')"
+              class="text-primary hover:text-primary/90"
+              >Sign In</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      function openAuthModal(mode) {
+        const modal = document.getElementById("authModal");
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+        const authTitle = document.getElementById("authTitle");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        if (mode === "login") {
+          loginForm.classList.remove("hidden");
+          signupForm.classList.add("hidden");
+          authTitle.textContent = "Sign In";
+        } else {
+          loginForm.classList.add("hidden");
+          signupForm.classList.remove("hidden");
+          authTitle.textContent = "Sign Up";
+        }
+      }
+      function closeAuthModal() {
+        const modal = document.getElementById("authModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+      function switchAuthMode(mode) {
+        openAuthModal(mode);
+      }
+      function handleLogin() {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        if (!email || !password) {
+          showToast("Please fill in all fields");
+          return;
+        }
+        // Mock login success
+        isUserLoggedIn = true;
+        updateUserMenu();
+        closeAuthModal();
+        showToast("Successfully signed in");
+      }
+      function handleSignup() {
+        const name = document.getElementById("signupName").value;
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        const confirmPassword = document.getElementById(
+          "signupConfirmPassword",
+        ).value;
+        if (!name || !email || !password || !confirmPassword) {
+          showToast("Please fill in all fields");
+          return;
+        }
+        if (password !== confirmPassword) {
+          showToast("Passwords do not match");
+          return;
+        }
+        // Mock signup success
+        isUserLoggedIn = true;
+        updateUserMenu();
+        closeAuthModal();
+        showToast("Successfully signed up");
+      }
+      function checkoutHandler() {
+        if (!isUserLoggedIn) {
+          openAuthModal("login");
+          showToast("Please sign in to checkout");
+          return;
+        }
+        if (cart.length === 0) {
+          showToast("Your cart is empty");
+          return;
+        }
+        // Mock checkout process
+        showToast("Order placed successfully");
+        cart = [];
+        updateCart();
+        toggleCart();
+      }
+    </script>
+  </body>
+</html>
